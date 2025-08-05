@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'maven-3'
+    }
+    
+
     environment {
         DOCKER_IMAGE = "your-dockerhub-username/demo-k8s-repo"
         KUBECONFIG_CREDENTIALS_ID = "kubeconfig" // Jenkins credential ID for Kubeconfig file
@@ -13,6 +18,12 @@ pipeline {
             }
         }
         
+        stage('Verify Maven') {
+            steps {
+                sh 'mvn --version'
+            }
+        }
+
         stage('Build') {
             steps {
                 sh 'mvn clean package -DskipTests'
